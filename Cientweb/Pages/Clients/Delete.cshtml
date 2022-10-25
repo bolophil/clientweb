@@ -1,0 +1,41 @@
+﻿@page
+@using System.Data.SqlClient;
+@model Cientweb.Pages.Clients.IndexModel
+@{
+    try
+    {
+        String id = Request.Query["id"];
+
+        String connectionString = "Data Source=localhost\\SQLEXPRESS;Initial Catalog=mystore;Integrated Security=True";
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+            String sql = "DELETE FROM clients WHERE id=@id";
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@id", id);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    command.ExecuteNonQuery();
+                }
+            }
+            String drop = "DROP INDEX clients.@id;";
+            using (SqlCommand command = new SqlCommand(drop, connection))
+            {
+                command.Parameters.AddWithValue("@id", id);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    command.ExecuteNonQuery();
+                }
+            }
+            Model.listClients.RemoveAt(Int32.Parse(id));
+        }
+    }
+    catch (Exception)
+    {
+    }
+
+    Response.Redirect("/Clients/Index");
+}
