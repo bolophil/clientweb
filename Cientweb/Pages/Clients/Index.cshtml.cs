@@ -6,9 +6,11 @@ namespace Cientweb.Pages.Clients
 {
     public class IndexModel : PageModel
     {
+      
         public List<ClientInfo> listClients = new List<ClientInfo>();
         public void OnGet()
         {
+          
             try
             {
                 String connectionString = "Data Source=localhost\\SQLEXPRESS;Initial Catalog=mystore;Integrated Security=True";
@@ -39,6 +41,10 @@ namespace Cientweb.Pages.Clients
             {
 
             }
+        }
+        public IActionResult OnGetLogout()
+        {     
+            return RedirectToPage("../Index");
         }
     }
 
